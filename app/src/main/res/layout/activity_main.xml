@@ -6,10 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/Theme.MovieBrowserPendo.AppBarOverlay">
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -17,9 +19,16 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/Theme.MovieBrowserPendo.PopupOverlay" />
 
+
     </com.google.android.material.appbar.AppBarLayout>
+
 
     <include layout="@layout/content_main" />
 
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="?attr/actionBarSize"
+        android:contentDescription="TMBD icon"
+        android:src="@drawable/tmdb_logo" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

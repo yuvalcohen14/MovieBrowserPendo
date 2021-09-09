@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.pendo.movie_browser.FirstFragment"
+        android:name="com.pendo.movie_browser.ui.MainRecyclerFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_main_recycler">
 
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.pendo.movie_browser.SecondFragment"
+        android:name="com.pendo.movie_browser.ui.MovieFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_movie_details">
 
