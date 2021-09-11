@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.MovieFragment">
+    android:layout_height="match_parent">
 
 
     <ImageView
@@ -24,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="@dimen/fab_margin"
+        android:fontFamily="@font/advent_pro_medium"
         android:gravity="center"
         android:text="move rate"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,11 +35,24 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/fab_margin"
+        android:fontFamily="@font/advent_pro_medium"
         android:gravity="center"
         android:text="release date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/movie_img"
         app:layout_constraintTop_toBottomOf="@id/movie_rate_text" />
+
+    <TextView
+        android:id="@+id/extra_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:fontFamily="@font/advent_pro_medium"
+        android:gravity="center"
+        android:text="extra"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/movie_img"
+        app:layout_constraintTop_toBottomOf="@id/release_date_text" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -48,22 +61,16 @@
         app:layout_constraintTop_toBottomOf="@id/movie_img">
 
         <TextView
-            android:layout_marginTop="@dimen/fab_margin"
-            android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginStart="@dimen/fab_margin"
-            android:layout_marginBottom="@dimen/fab_margin"
             android:id="@+id/movie_description_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="description"/>
+            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:fontFamily="@font/advent_pro_medium"
+            android:text="description" />
     </ScrollView>
 
-    <TextView
-        android:id="@+id/textview_second"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

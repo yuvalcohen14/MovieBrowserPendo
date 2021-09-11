@@ -1,9 +1,11 @@
 package com.pendo.movie_browser.server.workers
 
 import android.content.Context
-import androidx.lifecycle.ViewModel
+import androidx.work.Data
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.google.gson.Gson
+import com.pendo.movie_browser.MoviesApp
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Retrofit
@@ -14,10 +16,12 @@ class MovieServerWorker(context: Context, workerParams: WorkerParameters) : Work
     context,
     workerParams
 ) {
-    private  val okHttpClient: OkHttpClient by lazy {
+    private val okHttpClient: OkHttpClient by lazy {
         val okHttpBuilder = OkHttpClient.Builder()
         return@lazy okHttpBuilder.build()
     }
+    private val app: MoviesApp by lazy { MoviesApp.instance }
+    private val gson by lazy { Gson() }
 
     private val retroFit: Retrofit by lazy {
         Retrofit.Builder()
@@ -33,17 +37,18 @@ class MovieServerWorker(context: Context, workerParams: WorkerParameters) : Work
             .get()
             .build()
         val retrofitCreate = retroFit.create(TMDbServer::class.java)
-        try{
-            val response = retrofitCreate.getMovieData(inputData.getString("movieID")!!).execute()
-            val responseBody = response.body() ?: return  Result.failure()
-                // TODO : responseBody is a list of movieData- needs to be added to the recycler view
-            }
-        catch (e: Exception){
-
+        try {
+            val response = retrofitCreate.getFullMovieData(
+                "https://api.themoviedb.org/3/movie/${
+                    inputData.getString("movie_id")
+                }?api_key=0548999184d4bddfc532bbe17525b66c"
+            ).execute()
+            val responseBody = response.body() ?: return Result.failure()
+            return Result.success(
+                Data.Builder().putString("fullMovie", gson.toJson(responseBody)).build()
+            )
+        } catch (e: Exception) {
+            return Result.retry()
         }
-
-        val call = okHttpClient.newCall(request)
-        val execute = call.execute()
-        return  Result.success()
     }
 }

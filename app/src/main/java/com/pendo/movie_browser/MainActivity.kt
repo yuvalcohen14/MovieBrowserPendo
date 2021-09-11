@@ -9,50 +9,37 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Toolbar
+import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.pendo.movie_browser.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
-
+    val app = MoviesApp.instance
     override fun onCreate(savedInstanceState: Bundle?) {
+        this.window?.decorView?.layoutDirection = View.LAYOUT_DIRECTION_LTR;
         super.onCreate(savedInstanceState)
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        setSupportActionBar(binding.toolbar)
-
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        setContentView(R.layout.activity_main)
+        val toolBar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        app.currentTitle.observeForever {
+            toolBar.title = it
         }
+
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
+    override fun onBackPressed() {
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+        if (app.currentFragment == "fullMovie") {
+            Navigation.findNavController(findViewById(R.id.nav_host_fragment))
+                .navigate(R.id.action_SecondFragment_to_FirstFragment)
+        } else if (app.currentMoviePage > 1) {
+            app.currentMoviePage -= 1
+            app.reloadMoviesList()
+            Navigation.findNavController(findViewById(R.id.nav_host_fragment))
+                .navigate(R.id.action_FirstFragment_to_launcherFragment)
+        } else {
+            super.onBackPressed()
         }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
     }
 }

@@ -8,6 +8,5 @@ data class MovieFullData(
     var popularity: Float = 0.0f,
     var poster_path: String = "None",
     var vote_average: String,
-    var id: String = "000"
-
+    var id: String = ""
 )
