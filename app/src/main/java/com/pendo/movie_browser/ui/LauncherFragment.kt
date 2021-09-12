@@ -40,8 +40,6 @@ class LauncherFragment : Fragment() {
                     app.currentTitle.value = app.appName
                     Navigation.findNavController(view)
                         .navigate(R.id.action_launcherFragment_to_FirstFragment)
-                    app.moviesListStage.removeObserver(list_observer)
-
                 }
                 LoadingStage.FAILURE -> {
                     app.reloadMoviesList()
@@ -54,10 +52,8 @@ class LauncherFragment : Fragment() {
             when (it) {
                 LoadingStage.SUCCESS -> {
                     Log.d("yuval", app.moviesListStage.value.toString())
-                    app.currentTitle.value = app.currentMovieFullData.value!!.title
                     Navigation.findNavController(view)
                         .navigate(R.id.action_launcherFragment_to_SecondFragment)
-                    app.fullMovieStage.removeObserver(full_movie_observer)
 
                 }
                 LoadingStage.FAILURE -> {
@@ -71,6 +67,10 @@ class LauncherFragment : Fragment() {
             app.fullMovieStage.observe(viewLifecycleOwner, full_movie_observer)
         } else {
             app.moviesListStage.observe(viewLifecycleOwner, list_observer)
+        }
+        if (app.moviesListStage.value == LoadingStage.SUCCESS && app.fullMovieStage.value == LoadingStage.FAILURE){
+            Navigation.findNavController(view)
+                .navigate(R.id.action_launcherFragment_to_FirstFragment)
         }
 
     }

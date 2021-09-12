@@ -21,17 +21,22 @@ class MoviesApp : Application() {
 
     }
 
-    lateinit var moviesObserver: Observer
-    val moviesWorkManager = WorkManager.getInstance(this)
+    val gson by lazy { Gson() }
+    private val moviesWorkManager = WorkManager.getInstance(this)
     val appName: String by lazy { return@lazy "Movie Browser (Pendo)" }
     val imgStartURL by lazy { return@lazy "https://image.tmdb.org/t/p/original" }
     var currentFragment : String = "launcher"
     var currentMoviePage = 1
+
     val currentTitle: MutableLiveData<String> = MutableLiveData(appName)
     val currentMovieFullData: MutableLiveData<MovieFullData> = MutableLiveData()
+
     val moviesListStage: MutableLiveData<LoadingStage> = MutableLiveData(LoadingStage.FAILURE)
     val fullMovieStage: MutableLiveData<LoadingStage> = MutableLiveData(LoadingStage.FAILURE)
+
     private var moviesList: List<MovieData> = listOf()
+    var recentlyWatched = mapOf<String, MovieData>()
+
 
     fun getMovies(): List<MovieData> {
         return moviesList
@@ -78,7 +83,6 @@ class MoviesApp : Application() {
     }
 
     private fun setCurrentMovie(gson_str: String) {
-        val gson = Gson()
         currentMovieFullData.value = gson.fromJson(gson_str, MovieFullData::class.java)
         setLoading(LoadingStage.SUCCESS, false)
 
@@ -108,14 +112,17 @@ class MoviesApp : Application() {
                 }
             }
         } catch (e: Exception) {
-            Log.d("yuval", e.toString())
             moviesListStage.value = LoadingStage.FAILURE
             moviesList = listOf()
         }
     }
 
-    fun setMovies(results: List<MovieData>) {
+    private fun setMovies(results: List<MovieData>) {
         moviesList = results
         moviesListStage.value = LoadingStage.SUCCESS
+    }
+
+    fun getRecently(): List<MovieData> {
+        return recentlyWatched.values.toList()
     }
 }

@@ -1,14 +1,13 @@
 package com.pendo.movie_browser.server.workers
 
+import com.pendo.movie_browser.MoviesApp
+
 data class ResultCall(
     var results: List<MovieData> = mutableListOf()
 ) {
     constructor(strArray: Array<String>) : this() {
         for (str in strArray) {
-            val md = MovieData(str)
-            if (md.id.isNotEmpty()) {
-                results += MovieData(str)
-            }
+            results += MoviesApp.instance.gson.fromJson(str, MovieData::class.java)
         }
     }
 

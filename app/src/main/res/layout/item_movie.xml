@@ -3,17 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bg_movie_item"
-    android:layout_width="match_parent"
+    android:layout_width="150dp"
     android:layout_height="wrap_content"
     android:background="@color/black">
 
     <ImageView
         android:id="@+id/movie_item_img"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="150dp"
         android:src="@drawable/ic_outline_camera_alt_24"
         app:layout_constraintBottom_toTopOf="@id/movie_name_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -25,10 +27,21 @@
         android:paddingVertical="8dp"
         android:text="Movie Name"
         android:textColor="@color/lemon_green"
-        android:textSize="22sp"
         android:textStyle="bold"
+        android:maxLines="3"
         app:layout_constraintBottom_toTopOf="@id/movie_item_description"
         app:layout_constraintTop_toBottomOf="@id/movie_item_img" />
+
+    <TextView
+        android:id="@+id/num_rank"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintStart_toStartOf="@id/movie_item_img"
+        app:layout_constraintTop_toBottomOf="@id/movie_item_img"
+        app:layout_constraintBottom_toBottomOf="@id/movie_item_img"
+        android:text="1"
+        android:gravity="center"
+        android:background="@drawable/gradient"/>
 
     <TextView
         android:id="@+id/movie_item_description"
@@ -36,9 +49,10 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/advent_pro_medium"
         android:paddingHorizontal="@dimen/fab_margin"
-        android:paddingBottom="32dp"
+        android:paddingBottom="8dp"
         android:text="description, description, description, description, description, description, description"
         android:textColor="@color/white"
+        android:maxLines="4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movie_name_text" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,21 +14,18 @@ import com.bumptech.glide.Glide
 import com.pendo.movie_browser.MoviesApp
 import com.pendo.movie_browser.R
 import com.pendo.movie_browser.server.workers.MovieData
-import com.pendo.movie_browser.view_models.MoviesViewModel
 
 
 class MoviesAdapter : RecyclerView.Adapter<MovieItemHolder>() {
     private lateinit var context: Context
     private val moviesApp by lazy { MoviesApp.instance }
+    private var showRank: Boolean = true
 
     private val _movies: MutableList<MovieData> = ArrayList()
-    private lateinit var moviesViewModel: MoviesViewModel
 
-    fun setViewModel(vm: MoviesViewModel) {
-        moviesViewModel = vm
-    }
 
-    fun setItems(items: List<MovieData>) {
+    fun setItems(items: List<MovieData>, showRank: Boolean) {
+        this.showRank = showRank
         _movies.clear()
         items.forEach { _movies.add(it) }
         notifyDataSetChanged()
@@ -43,16 +40,18 @@ class MoviesAdapter : RecyclerView.Adapter<MovieItemHolder>() {
 
 
     override fun onBindViewHolder(holder: MovieItemHolder, position: Int) {
-        if (position == _movies.size) {
+        holder.movieRank.visibility = View.GONE
+
+        if (position == 0) {
             holder.movieTitle.text = ""
-            holder.movieDescription.text = "<< Previous Page"
+            holder.movieDescription.text = "Previous Page"
             holder.movieImg.setImageDrawable(
                 ContextCompat.getDrawable(
                     context,
                     R.drawable.ic_baseline_navigate_before_24
                 )
             )
-            if (moviesApp.currentMoviePage > 1) {
+            if (moviesApp.currentMoviePage > 1 && showRank) {
                 holder.movieImg.visibility = View.VISIBLE
                 holder.movieImg.setColorFilter(
                     ContextCompat.getColor(context, R.color.teal),
@@ -70,16 +69,16 @@ class MoviesAdapter : RecyclerView.Adapter<MovieItemHolder>() {
                 holder.movieImg.visibility = View.GONE
                 holder.movieDescription.visibility = View.GONE
             }
-        } else if (position == _movies.size + 1) {
+        } else if (position == _movies.size+1) {
             holder.movieTitle.text = ""
-            holder.movieDescription.text = " Next Page >>"
+            holder.movieDescription.text = " Next Page"
             holder.movieImg.setImageDrawable(
                 ContextCompat.getDrawable(
                     context,
                     R.drawable.ic_baseline_navigate_next_24
                 )
             )
-            if (moviesApp.currentMoviePage < 500) {
+            if (moviesApp.currentMoviePage < 500 && showRank) {
                 holder.movieImg.visibility = View.VISIBLE
                 holder.movieDescription.visibility = View.VISIBLE
                 holder.movieDescription.gravity = Gravity.CENTER_HORIZONTAL
@@ -98,7 +97,11 @@ class MoviesAdapter : RecyclerView.Adapter<MovieItemHolder>() {
                 holder.movieDescription.visibility = View.GONE
             }
         } else {
-            val movie = _movies[position]
+            val movie = _movies[position-1]
+            if (showRank){
+            holder.movieRank.visibility = View.VISIBLE}
+            holder.movieRank.text = ((moviesApp.currentMoviePage-1)*20 + position).toString()
+
             holder.movieTitle.text = movie.title
             if (movie.overview.length > 100) {
                 (movie.overview.substring(0, 97) + "...").also { holder.movieDescription.text = it }

@@ -28,17 +28,18 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onBackPressed() {
-
-        if (app.currentFragment == "fullMovie") {
+    override fun onBackPressed() = when {
+        app.currentFragment == "fullMovie" -> {
             Navigation.findNavController(findViewById(R.id.nav_host_fragment))
                 .navigate(R.id.action_SecondFragment_to_FirstFragment)
-        } else if (app.currentMoviePage > 1) {
+        }
+        app.currentMoviePage > 1 -> {
             app.currentMoviePage -= 1
             app.reloadMoviesList()
             Navigation.findNavController(findViewById(R.id.nav_host_fragment))
                 .navigate(R.id.action_FirstFragment_to_launcherFragment)
-        } else {
+        }
+        else -> {
             super.onBackPressed()
         }
     }

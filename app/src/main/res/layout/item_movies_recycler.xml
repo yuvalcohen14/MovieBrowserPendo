@@ -7,25 +7,28 @@
     android:layout_height="wrap_content"
     android:background="@color/black">
 
-    <ImageView
-        android:id="@+id/img_page"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="150dp"
-        android:src="@drawable/ic_baseline_navigate_next_24"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/teal" />
-
     <TextView
-        android:id="@+id/txt_page"
+        android:id="@+id/movie_category_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/advent_pro_medium"
-        android:gravity="center"
-        android:paddingHorizontal="@dimen/fab_margin"
-        android:paddingBottom="32dp"
-        android:text="next page"
-        android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/img_page"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:fontFamily="@font/carter_one"
+        android:gravity="start"
+        android:maxLines="3"
+        android:paddingVertical="8dp"
+        android:layout_marginTop="32dp"
+        android:text="Movie Name"
+        android:textSize="32dp"
+        android:textColor="@color/teal"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingStart="32dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/movies_recycler"
+        android:layout_marginBottom="32dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/movie_category_text"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

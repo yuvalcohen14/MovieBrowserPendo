@@ -21,7 +21,6 @@ class MovieServerWorker(context: Context, workerParams: WorkerParameters) : Work
         return@lazy okHttpBuilder.build()
     }
     private val app: MoviesApp by lazy { MoviesApp.instance }
-    private val gson by lazy { Gson() }
 
     private val retroFit: Retrofit by lazy {
         Retrofit.Builder()
@@ -32,10 +31,6 @@ class MovieServerWorker(context: Context, workerParams: WorkerParameters) : Work
     }
 
     override fun doWork(): Result {
-        val request = Request.Builder()
-            .url("https://api.themoviedb.org/3/discover/movie?api_key=0548999184d4bddfc532bbe17525b66c")
-            .get()
-            .build()
         val retrofitCreate = retroFit.create(TMDbServer::class.java)
         try {
             val response = retrofitCreate.getFullMovieData(
@@ -45,7 +40,7 @@ class MovieServerWorker(context: Context, workerParams: WorkerParameters) : Work
             ).execute()
             val responseBody = response.body() ?: return Result.failure()
             return Result.success(
-                Data.Builder().putString("fullMovie", gson.toJson(responseBody)).build()
+                Data.Builder().putString("fullMovie", app.gson.toJson(responseBody)).build()
             )
         } catch (e: Exception) {
             return Result.retry()

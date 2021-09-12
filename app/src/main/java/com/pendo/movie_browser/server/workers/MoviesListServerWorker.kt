@@ -34,30 +34,20 @@ class MoviesListServerWorker(context: Context, workerParams: WorkerParameters) :
     }
 
     override fun doWork(): Result {
-        Log.d("yuval", "call start do worke")
 
-        val request = Request.Builder()
-            .url("https://api.themoviedb.org/3/discover/movie?api_key=0548999184d4bddfc532bbe17525b66c")
-            .get()
-            .build()
         val retrofitCreate = retroFit.create(TMDbServer::class.java)
         try {
-            Log.d("app.currentMoviePage", app.currentMoviePage.toString())
 
             val response = retrofitCreate.getMoviesData(app.currentMoviePage).execute()
             val responseBody = response.body() ?: return Result.failure();
-//            app.setMovies(responseBody.results)
             return Result.success(
                 Data.Builder()
                     .putStringArray("moviesList", responseBody.toStringArray())
                     .build())
-            // TODO : responseBody is a list of movieData- needs to be added to the recycler view
         } catch (e: Exception) {
+            Log.d("yuval exception", e.toString())
+
             return Result.retry()
         }
-
-//        val call = okHttpClient.newCall(request)
-//        val execute = call.execute()
-//        return Result.success()
     }
 }

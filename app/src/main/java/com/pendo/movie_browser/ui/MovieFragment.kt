@@ -11,6 +11,7 @@ import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.pendo.movie_browser.MoviesApp
 import com.pendo.movie_browser.R
+import com.pendo.movie_browser.server.workers.MovieData
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -38,6 +39,8 @@ class MovieFragment : Fragment() {
         val curMovie = moviesApp.currentMovieFullData.value!!
         moviesApp.currentFragment= "fullMovie"
 
+        moviesApp.recentlyWatched += Pair(curMovie.id,MovieData(curMovie.overview,curMovie.title,curMovie.poster_path,curMovie.id))
+
         Glide.with(requireContext())
             .load(moviesApp.imgStartURL + curMovie.poster_path)
             .into(movieImg)
@@ -47,7 +50,7 @@ class MovieFragment : Fragment() {
         movieDate.text = "release Date: ${curMovie.release_date}"
         movieDescription.text = curMovie.overview
         movieRate.text = "Rate: ${curMovie.vote_average}"
-        movieExtra.text = "Popularity: ${curMovie.popularity} \n Original Language: ${curMovie.original_language}"
+        movieExtra.text = "Popularity: ${curMovie.popularity} \n\n Original Language: ${curMovie.original_language}"
     }
 
     override fun onDestroyView() {
